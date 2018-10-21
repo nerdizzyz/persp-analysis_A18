@@ -1,0 +1,175 @@
+---
+title: "Assignment 3"
+author: "Donghyun Kang"
+date: "OCT 21 2018"
+output: pdf_document
+indent: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, message = F, fig.width=7, fig.height=3)
+library(ggplot2)
+library(tidyverse)
+library(scales)
+```
+
+## 1. Simulation in Sociology, Moretti (2002)
+
+#### (a) The author discusses the role of simulation as a tool for exploring theory. She also highlights the importance of establishing "validity" of simulative model of the thoery.
+
+
+* According to the author, the computational simulation models give us three advantages in terms of advancing social scientific theories. First, computation models provide a language between mathematical language and natural language overcome the limitation of natural language and mathematics for theory work. The former can be too fuzzy while the latter could be too rigid. In addition to this, it helps us to put the mental model in a clearer way particularly via formalization.  Second, it can function as a tool for studying complex systems in which we cannot find the universal deterministic laws governing the system. Simulation studies enable us to explore the chaotic complex systems and their emergent property in which the complex macro-level outcomes cannot be reduced to the simple micro-level characteristics. Lastly, the simulative models offer us tools for experimenting on theory. This is possible because simulation models permit us to test the theory in parameter space otherwise impossible to explore in reality. 
+
+* Even though the author, in general, shows a positive attitude towards simulation as a scientific research method (especially in terms of theory work), she gives an important caveat as well: the issue of model validity. The validity problem stems from the fact the simulative models are inherently a virtual worlds lacking the material senses of the real world.  Using an analogy drawing upon “Turing Test” in which the validity of a model is established when the behavior of a model is indistinguishable from the real world referents, the author suggests that the primary challenge of simulation studies in the realm of social science is building legitimate connections between the simulations and the empirical worlds, which is not easy at all. For example, a researcher inevitably abstracts the real world phenomenon to build a simulation model but it is sometimes difficult to interpret either input values or output values of the model meaningfully.  Moreover, the fact that social scientists have yet agreed upon how the social worlds should be systematically measured renders it hard to establish the “level of acceptability” of a simulation model. The author concludes that the simulation studies in social science will be successful when the issue of validity is appropriately addressed. 
+ 
+#### (b) The author highlights "dynamic feedback" as a key characteristic that computer simulation is good at modeling. Given an example of model that the author cites from Sociology that exhibits the characteristic. Come up with an example of a research question on a political science topic wherhe the underlying system exhibits this type of feedback. 
+
+* The author highlights "dynamic feedback" as a key characteristic that computer simulation is good at modeling. Given an example of a model that the author cites from Sociology that exhibits the characteristic. Come up with an example of a research question on a political science topic where he the underlying system exhibits this type of feedback.
+
+* The dynamic feedback refers to the output of a certain system changes the input in the long run. Put it differently, dynamic implies the diachronic property of a given system; the feedback means that the output of the system causes the change of the input as a form of a loop. The author gives some examples from Sociology. For example, the author cites Reynolds (1994) to introduce the application of a genetic algorithm in terms of explaining the cultural evolutions. The concept of evolution by definition includes the dynamic feedback process because the selection of a given time period will be the input of the next time period. Moreover, Hanneman et al. (1995) developed a system dynamics model to translate the concepts proposed by Weber, Simmel, and Closer to better understand the conflict theory.
+
+* As for a research question on political science, I would like to suggest is the somewhat extended version of what Robert Axelrod has done when he studied the evolution of cooperation. I especially think it will be fruitful if we can think of the interaction between the certain geographical structure of cities and the possibility of cooperation or conflict (e.g., the protests) with multi-agent models. For example, I think whether the concentric layouts of a city (for example, Chicago) or the sprawled structures a city (cities like LA) facilitate/or hamper the collective actions will be an interesting research topic.
+
+
+## 2. Simulating your income
+
+#### (a)
+
+```{r}
+#initial values 
+rho <- 0.4
+sigma <- 0.13
+g <- 0.025
+inc0 <- 80000
+
+#function for generating 40 random errors
+errors_40 <- function(sig){
+  err <- rnorm(40, 0 , sig)
+  err
+}
+
+#function for generating income
+gen_inc <- function(g, rho, sigma, init_inc){
+  errors <- errors_40(sigma)
+  inc_40y <- vector(length = 40)
+  inc_40y[1] <- log(init_inc) + errors[1]
+  t <- 1
+  while (t <= 39){
+      inc <- (1-rho)*(log(init_inc) + g*(t)) + rho*inc_40y[t] + errors[t + 1]
+      inc_40y[t + 1] <- inc
+      t <- t + 1
+  }
+  inc_40y
+}
+
+#function for simulation
+income_sim <- function(g, rho, sigma, init_inc, num_sim){
+  inc_list <- vector("list", num_sim)
+  # generate 10,000 sets 
+  i <- 1
+  while (i <= 10000){
+    inc_list[[i]] <- gen_inc(g, rho, sigma, init_inc)
+    i <- i + 1
+  }
+  inc_list
+}
+
+#generate 10,000 simulation
+inc_list <- income_sim(g, rho, sigma, inc0, 10000)
+
+#draw one random path and make a graph
+x <- 2020:2059
+ran_int <- sample(1:10000, 1) 
+y <- inc_list[[ran_int]]
+df_a <- as.tibble(cbind(x,y))
+
+#create a graph
+df_a %>%
+  ggplot(aes(x,exp(y))) + geom_line() + geom_point() + 
+  xlab("Year") + ylab("Income ($)") + 
+  ggtitle("Income Trend of a MACSS Graduate") + 
+  scale_y_continuous(labels=comma)
+```
+
+#### (b)
+```{r}
+b_incomes <- vector(length = 10000)
+k <- 1
+while (k <= 10000){
+  b_incomes[k] <- exp(inc_list[[k]][1])
+    k <- k + 1
+}
+b_incomes <- as.tibble(b_incomes)
+b_incomes %>%
+  ggplot(aes(x = value)) + geom_histogram(bins = 50) +
+  ggtitle("First Year Income Distribution") + xlab("Income ($)")
+
+#more than 100,000
+b_1 <- b_incomes %>%
+  filter(value > 100000) %>%
+  summarize(n = n()/10000)
+
+#more than 100,000
+b_2 <- b_incomes %>%
+  filter(value < 70000) %>%
+  summarize(n = n()/10000)
+```
+
+* The percentage of the class will earn more than $100,000 is `r b_1*100`%.
+
+* The percentage of the class will earn less than $70,000 is `r b_2*100`%.
+
+* The graphs seems to follow a normal distribution, which has a bell-curve shape.
+
+#### (c)
+```{r}
+#debt_payoff calculator
+debt_cal <- function(debt_input, inc_list, incom_percent){
+  result <- vector(length = 10000)
+  j <- 1
+  while (j <= 10000){
+    year <- 0
+    incomes <- exp(inc_list[[j]])
+    k <- 0
+    debt <- debt_input
+    while (debt > 0){
+      k <- k + 1
+      debt <- debt - incomes[k] * 0.1
+      result[j] <- k
+    }
+    j <- j + 1
+  }
+  result
+}
+
+debt_years <- debt_cal(95000, inc_list, 0.1)
+df_debt <- as.tibble(debt_years)
+
+df_debt %>%
+  ggplot(aes(x = value)) + geom_bar(aes(y = (..count..)/sum(..count..))) +
+  xlab("Years") + ylab("Percent") + ggtitle("Years for paying off the loan - (c) ")
+
+c_1 <- df_debt %>%
+  filter(value <= 10) %>%
+  summarize(n = n() / 10000)
+```
+
+* `r c_1*100`% of the simulations can pay off the loan in 10 years.
+
+#### (d)
+
+```{r}
+inc_list_2 <- income_sim(g, 0.17, sigma, 90000, 10000)
+debt_years_re <- debt_cal(95000, inc_list_2, 0.1)
+df_debt_re <- as.tibble(debt_years_re)
+
+df_debt_re %>%
+  ggplot(aes(x = value)) + geom_bar(aes(y = (..count..)/sum(..count..))) +
+  xlab("Years") + ylab("Percent") + ggtitle("Years for paying off the loan - (d)")
+
+d_1 <- df_debt_re %>%
+  filter(value <= 10) %>%
+  summarize(n = n() / 10000)
+```
+
+* `r d_1*100`% of the simulations can pay off the loan in 10 years.
