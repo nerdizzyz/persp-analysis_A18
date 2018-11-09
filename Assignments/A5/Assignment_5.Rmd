@@ -1,0 +1,67 @@
+---
+title: "Assignment 5"
+author: "Donghyun Kang"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1.
+
+  (a) I did it! The below is a screenshot of my search result with the keyword “experiment.”
+
+  (b) The experiment I chose was an investment experiment. It has a flat rate of \$0.50 for any participation. In addition to this, I could get up to \$0.75 bonus if I answer three questions correctly (\$0.25/correct answer). This means that I would receive at maximum \$1.25 by performing the task. 
+
+  (c) There were four qualifications: 1) the participants have to be located in the U.S.; 2) HIT approval of a participation rate should be larger than 95%; 3) the participants need to pass the pretest comprising of three questions asking their previous real-world investment experience; 4) previous participation has not been granted (which I am sure what it means exactly). 
+
+  (d) The description suggests that it would take ten minutes, which can be translated into \$3 in terms of the flat rate. However, theoretically speaking, the hourly rate could be up to \$7.5 if all the participants get the maximum bonus of \$0.75 with the flat rate. 
+
+  (e) It expires in 21 days, as of Nov 6 2018. 
+
+  (f) It would cost \$1.25 million if 1 million people participated. 
+
+
+## 2.
+
+  (a) State the research question of this paper in the form of a question and in one sentence?
+
+  * Does the impact of energy conservation “nudge” on the households, i.e., providing the information about the amount of the electricity usage, the consumption patterns of comparable households, and some tips to save the electricity consumption, (see Costa & Kahn 2013, p. 692 and pp. 698-699 for the details) differ according to the political ideology? 
+
+  (b) The data for this study came from at least two sources. Name the sources, and describe the data.
+  
+  *  1)The electricity billing data from January 2007 to October 2009, which was provided by the regional utility. It contains the price of energy, “the length of the billing cycle (measured in days), whether the house uses electric heat, and whether the household is enrolled in the electric utility’s program to purchase energy from renewable sources” (Costa & Kahn 2013, p. 685).
+
+  * 2)The daily temperature data, which was later averaged based on the billing cycles (the authors did not specify the source).
+ 
+  * 3)“Individual voter registration and marketing data for March 2009” (ibid, p. 685) that the authors obtained from a commercial company, Aristotle.com.  This data includes “party identification, and whether the individual donates to environmental organizations” (ibid, p. 685). 
+
+
+  (c) Define and describe the control group and the treatment group in this study. What was the treatment?
+
+  * The random assignment took place in 2008. The control and the treatment group had 49,000 and 35,000 households, respectively. However, the final dataset matched with the information on the size, the type of energy (whether it was gas or electricity), and the age of the house (ibid, p. 685) produces in total 48,058 and 24,028 households for the control group and the treatment group, respectively. The households in the control group were basically randomly selected and did not receive any report from the utility. In contrast, the households in the treatment group received HER (Home Electricity Reports) in which contains the information about the amount of the electricity usage, the consumption patterns of comparable households and some tips to save the electricity consumption. (ibid, pp. 682-683) 
+
+  (d) Beyond the previous work of Schult et al. (2007), what extra layer of participant heterogeneity did Costa and Kahn control for in order to answer their research question?
+
+  * Schult et al. (2007) tested the peer effects of comparison in terms of reducing electricity and gas consumption with a within-subjects research design, lacking the information regarding the political ideology. The work done by Costa and Kahn (2013) addressed first introduced the mixed design in which the change in the treatment group and control group is compared. And they also raised the question of whether the political ideology can change the impact of a “nudge” style intervention on the saving energy. In a nutshell, Costa and Kahn added the layer of the political ideology and tested using it as an intervening/mediating variable. 
+
+  (e) What was Cost and Kahn’s finding? 
+  
+  * The political liberals in the U.S., especially those actively have engaged in the energy conservation activities (e.g., using electricity generated from renewable energy sources or participating in donation) and live in a block of which majority of the population is liberal, tend to more positively react to the conservation “nudge” than the political conservatives. (ibid., p. 682) In addition to this, the conservative households were more likely to opt-out of the experiment than the liberal household (ibid., p. 698)
+  
+## 3.
+
+  (a) Under what conditions might it be better to focus your resources on a small number of clinics and under what conditions might it be better spread them more widely? 
+
+  * We might simply assume that the random assignment of the patients would generate a data well prepared for a statistical test but we also need to take into consideration a condition called Stable Unit Treatment Value Assumption (SUTVA). Under SUTVA, two conditions are assumed: 1) “no spillover effect” over the participants, and 2) “no hidden treatments” (Salganik 2017, pp. 206-207). The two conditions basically state that these two effects should be considered if we are to isolate the treatment effect accurately thus SUTVA informs us how we should spend our financial resources when we design this type of clinical research.
+
+  * If we have a good reason that the 150 clinics are quite identical in terms of the quality of medical staffs, the capacity for vaccination, the location and accessibility, etc., (which will satisfy the second condition of SUTVA by excluding possible hidden treatments), and the patients are expected not to communicate with each other so the spillover effects can be avoided (which will satisfy the first condition of SUTVA), we will be better to choose a small number of clinics.  
+
+  * On the contrary, if we know that the 150 clinics are dissimilar and some sorts of spillovers are expected among the patients in a clinic, it will be more preferable to distribute the budgets more widely to counter those effects, which will be more realistic considering that the social experiments are not conducted in a sterile laboratory. 
+
+  (b) What factors would determine the smallest effect size that you will be able to reliably detect with your budget? 
+
+  * If we know the pre-treatment information about the patients, we can reduce the variance of the estimator by using the mixed research design (the difference-in-differences estimators) or ANCOVA (Analysis of Covariance) model which can help us to detect the small effect size. Even though it is hard to know in advance how this would benefit us but this design produces a better estimate especially when the possible covariates are predictive of the outcomes (in this case, the getting vaccination). 
+
+
